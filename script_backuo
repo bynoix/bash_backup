@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# Synchronise deux répertoires en utilisant FTP
+
+HOST="ftp.serveur"  
+LOGIN="user-ftp"
+PASSWORD="passwordftp"
+LOCALDIR="/backups/"
+REMOTEDIR="/"
+EXCLUDED="/.ftpquota~"
+
+function Usage()
+{
+  echo -e "\n  Synchronise un répertoire local avec un répertoire distant en utilisant FTP";  
+  echo -e "\n  USAGE: ftpsync local_dir";
+  echo;
+}
+
+if [ "$LOCALDIR" = "" ]
+then
+  echo -e "  ERREUR: Veuillez spécifier un répertoire local";
+  Usage;
+  exit 1;
+fi
+
+if [ -e "$LOCALDIR" ]
+then
+  lftp -c "set ftp:list-options -a;
+  open ftp://$LOGIN:$PASSWORD@$HOST; 
+  lcd $LOCALDIR;
+  cd $REMOTEDIR;
+  mirror --reverse \
+         --delete \
+         --verbose \
+         --exclude-glob $EXCLUDED";
+fi
+
+
+LOCALDIR
+REMOTEDIR
