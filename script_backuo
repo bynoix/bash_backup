@@ -25,7 +25,7 @@ fi
 
 if [ -e "$LOCALDIR" ]
 then
-  lftp -c "set ftp:list-options -a;
+  lftp -c "set ftp:list-options -a;set ftp:ssl-allow yes;
   open ftp://$LOGIN:$PASSWORD@$HOST; 
   lcd $LOCALDIR;
   cd $REMOTEDIR;
